@@ -1,65 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
-<title>TeamProject</title>
-<!-- vertex shader는 vertex의 크기와 위치를 조정-->
+<meta http-equiv="Content-Type" content="text/html" charset="utf-8" >
+<title>Team_project</title>
+
 <script id="vertex-shader" type="x-shader/x-vertex">
-
-attribute vec4 vPosition;
-attribute vec3 vNormal;
-varying vec4 fColor;
-
+attribute vec4 vPosition;   // attribute variable
 uniform mat4 modelViewMatrix;
-uniform mat4 projectionMatrix;
 
-uniform vec4 ambientProduct, diffuseProduct, specularProduct;
-uniform vec4 lightPosition;
-uniform float shininess;
-
-uniform vec3 eye;
-
-void
-main()
+void main()
 {
-    vec3 pos = - (modelViewMatrix * vPosition).xyz;
-    vec3 light = lightPosition.xyz;
-    vec3 viewerPos = eye;
-    
-    vec3 L = normalize( light - pos );
-    vec3 E = normalize( eye - pos );
-    vec3 H = normalize(L + E);
-    
-    vec4 NN = vec4(vNormal, 0);
-
-    vec3 N = normalize((modelViewMatrix * NN).xyz);
-    vec4 ambient = ambientProduct;
-
-    float d_val = max( dot(L,N), 0.0 );
-    vec4 diffuse = d_val * diffuseProduct;
-
-    float s_val = pow( max(dot(N, H), 0.0), shininess);
-    vec4 specular = s_val * specularProduct;
-
-    if( dot(L,N) < 0.0) {
-        specular = vec4(0.0,0.0,0.0,1.0);
-    }
-
     gl_PointSize = 10.0;
-    gl_Position = projectionMatrix * modelViewMatrix * vPosition;
-    fColor = ambient + diffuse + specular;
-
-    fColor.a = 1.0;
+    gl_Position = modelViewMatrix * vPosition;
 }
 </script>
-<!--쉐이더-->
-<script id="fragment-shader" type="x-shader/x-fragment">
-    
 
-void
-main()
+<script id="fragment-shader" type="x-shader/x-fragment">
+
+void main()
 {
-    gl_FragColor = vec4(0.1, 0.8, 0.9, 1.0);
+    gl_FragColor = vec4( 0.1, 0.8, 0.9, 1.0 );
 }
 </script>
 
@@ -68,30 +28,11 @@ main()
 <script type="text/javascript" src="../Common/MV.js"></script>
 <script type="text/javascript" src="Robot.js"></script>
 </head>
-
 <body>
-    <canvas id="gl-canvas" width="1024" height="512">
-    <!--도형을 그리는 도화지 가로 세로 설정-->
-    Oops ... your browser doesn't support the HTML5 canvas element
-    </canvas>
-    <div>
-        <!-- <button id = "rotationX">rotationX</button>
-        <button id = "rotationY">rotationY</button>
-        <button id = "rotationZ">rotationZ</button>
-        <div></div>
-        <button id = "right_move">></button>
-        <button id = "left_move"><</button>
-        <button id = "up_move">^</button>
-        <button id = "down_move">v</button>
-        <div></div>
-        <button id = "scale+">scale+</button>
-        <button id = "scale-">scale-</button>
-        <div></div>
-        <button id = "pause">ll</button> -->
-        <div></div>
-        <button id = "front_cam">front_cam</button>
-        <button id = "side_cam">side_cam</button>
-        <button id = "top_cam">top_cam</button>
-    </div>
+    <canvas id="gl-canvas" width="1024" height="1024"></canvas><br><br>
+    <button id="one">Rotate Base</button>
+    <button id="two">Rotate LowerArm</button>
+    <button id="three">Rotate UpperArm</button>
+
 </body>
 </html>
