@@ -3,17 +3,7 @@
 var gl;
 
 var theta = [0,0,0];
-var xAxis = 0;
-var yAxis = 1;
-var zAxis = 2;
-var axis = 3;
 
-var transX = 0;
-var change_x = 0;
-var transY = 0;
-var change_y = 0;
-
-var scaleSize = 1;
 
 var modelViewMatrix;
 var modelViewMatrixLoc;
@@ -28,81 +18,11 @@ var up = vec3(0,1,0);
 var projectionMatrix;
 var projectionMatirxLoc;
 
-var lightPosition = vec4(1.0,1.0,1.0,0.0);
-var lightAmbient = vec4(0.2,0.2,0.2,1.0);
-var lightDiffuse = vec4(1.0,1.0,1.0,1.0);
-var lightSpecular = vec4(1.0,1.0,1.0,1.0);
-
-var materialAmbient = vec4(1.0,0.0,1.0,1.0);
-var materialDiffuse = vec4(1.0,0.8,0.0,1.0);
-var materialSpecular = vec4(1.0,0.8,0.0,1.0);
-var materialShininess = 100.0;
-
-var eyeLoc;
 
 window.onload = function init()
 {
     var canvas = document.getElementById( "gl-canvas" );
-    // document.getElementById("rotationX").onclick = function(){
-    //      axis = 0;
-    //      change_x = 0;
-    //      change_y = 0;
-    //  }
 
-    // document.getElementById("rotationY").onclick = function(){
-    //     axis = 1;
-    //     change_x = 0;
-    //     change_y = 0;
-    // }
-
-    // document.getElementById("rotationZ").onclick = function(){
-    //     axis = 2;
-    //     change_x = 0;
-    //     change_y = 0;
-    // }
-
-    // document.getElementById("right_move").onclick = function(){
-    //     axis = 3;
-    //     change_x = 0.003;
-    //     change_y = 0;
-    // }
-    // document.getElementById("left_move").onclick = function(){
-    //     axis = 3;
-    //     change_x = -0.003;
-    //     change_y = 0;
-    // }
-    // document.getElementById("up_move").onclick = function(){
-    //     axis = 3;
-    //     change_x = 0;
-    //     change_y = 0.003;
-    // }
-    // document.getElementById("down_move").onclick = function(){
-    //     axis = 3;
-    //     change_x = 0;
-    //     change_y = -0.003;
-    // }
-
-    // document.getElementById("scale+").onclick = function(){
-    //     console.log(scaleSize);
-    //     scaleSize = scaleSize + 0.1;
-    //     if(scaleSize >= 2){//너무 큰 이니셜 방지
-    //         scaleSize = 2;
-    //     }
-    // }
-    
-    // document.getElementById("scale-").onclick = function(){
-    //     console.log(scaleSize);
-    //     scaleSize = scaleSize - 0.1;
-    //     if(scaleSize <= 0){//반전 방지
-    //         scaleSize = 0;
-    //     }
-    // }
-    
-    // document.getElementById("pause").onclick = function(){
-    //     axis = 3;
-    //     change_x = 0;
-    //     change_y = 0;
-    // }
 
     document.getElementById("front_cam").onclick = function(){
         eyeX = 0;
@@ -276,48 +196,19 @@ window.onload = function init()
     modelViewMatrixLoc = gl.getUniformLocation(program,"modelViewMatrix");
     projectionMatirxLoc = gl.getUniformLocation(program,"projectionMatrix");
     
-    var ambientProduct = mult(lightAmbient, materialAmbient);
-    var diffuseProduct = mult(lightDiffuse, materialDiffuse);
-    var specularProduct = mult(lightSpecular, materialSpecular);
 
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
     gl.uniformMatrix4fv(projectionMatirxLoc, false, flatten(projectionMatrix));
-    
-    gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct) );
-    gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct) );
-    gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct) );
-    gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(lightPosition) );
 
-    gl.uniform1f(gl.getUniformLocation(program, "shininess"), materialShininess );
-
-
-    eyeLoc = gl.getUniformLocation(program, "eye");
-    gl.uniform3fv(eyeLoc, eye);
     render();
 }
 
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-
-    theta[axis] += 1.0;
-    modelViewMatrix = rotateX(theta[xAxis]);
-    modelViewMatrix = mult(modelViewMatrix, rotateY(theta[yAxis]));
-    modelViewMatrix = mult(modelViewMatrix, rotateZ(theta[zAxis]));
-
-    transX = transX + change_x;
-    transY = transY + change_y; 
-    modelViewMatrix = mult(modelViewMatrix, translate(transX,transY,0));
-
-    modelViewMatrix = mult(modelViewMatrix, scalem(scaleSize,scaleSize,scaleSize));
-
     eye = vec3(eyeX,eyeY,eyeZ);
-    modelViewMatrix = mult(modelViewMatrix, lookAt(eye,at,up));
-    projectionMatrix = perspective(30,1,1,0);
-    
+    modelViewMatrix = lookAt(eye,at,up);
     gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-    gl.uniformMatrix4fv(projectionMatirxLoc, false, flatten(projectionMatrix));
-    gl.uniform3fv(eyeLoc, eye);
-  
+
         
     
     gl.drawArrays(gl.LINE_LOOP,0,4); //Torso앞면
