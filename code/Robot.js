@@ -126,246 +126,127 @@ window.onload = function init()
     gl = WebGLUtils.setupWebGL( canvas );
     if ( !gl ) { alert( "WebGL isn't available" ); }
     var vertices = [
+
+        //Torso
+        vec3(-0.25,0.35,0.15), //Torso-1
+        vec3(0.25,0.35,0.15), //Torso-2
+        vec3(0.25,-0.35,0.15), //Torso-3
+        vec3(-0.25,-0.35,0.15), //Torso-4
+
+        vec3(-0.25,0.35,-0.15), //Torso-5
+        vec3(0.25,0.35,-0.15), //Torso-6
+        vec3(0.25,-0.35,-0.15), //Torso-7
+        vec3(-0.25,-0.35,-0.15), //Torso-8
+
+        vec3(-0.25,0.35,0.15), //Torso-1
+        vec3(-0.25,0.35,-0.15), //Torso-5
+        vec3(0.25,0.35,0.15), //Torso-2
+        vec3(0.25,0.35,-0.15), //Torso-6
+        vec3(0.25,-0.35,0.15), //Torso-3
+        vec3(0.25,-0.35,-0.15), //Torso-7
+        vec3(-0.25,-0.35,0.15), //Torso-4
+        vec3(-0.25,-0.35,-0.15), //Torso-8
+
+        //Head
+        vec3(-0.075, 0.075, 0.075), //Head-1
+        vec3(0.075, 0.075, 0.075), //Head-2
+        vec3(0.075, -0.075, 0.075), //Head-3
+        vec3(-0.075, -0.075, 0.075), //Head-4
+
+        vec3(-0.075, 0.075, -0.075), //Head-5
+        vec3(0.075, 0.075, -0.075), //Head-6
+        vec3(0.075, -0.075, -0.075), //Head-7
+        vec3(-0.075, -0.075, -0.075), //Head-8
+
+        vec3(-0.075, 0.075, 0.075), //Head-1
+        vec3(-0.075, 0.075, -0.075), //Head-5
+        vec3(0.075, 0.075, 0.075), //Head-2
+        vec3(0.075, 0.075, -0.075), //Head-6
+        vec3(0.075, -0.075, 0.075), //Head-3
+        vec3(0.075, -0.075, -0.075), //Head-7
+        vec3(-0.075, -0.075, 0.075), //Head-4
+        vec3(-0.075, -0.075, -0.075), //Head-8
+
+        //Left upper arm
+        vec3(-0.05,0.2,0.05), // upper arm-1
+        vec3(0.05,0.2,0.05), // upper arm-2
+        vec3(0.05,-0.2,0.05), // upper arm-3
+        vec3(-0.05,-0.2,0.05), // upper arm-4
+
+        vec3(-0.05,0.2,-0.05), // upper arm-5
+        vec3(0.05,0.2,-0.05), // upper arm-6
+        vec3(0.05,-0.2,-0.05), // upper arm-7
+        vec3(-0.05,-0.2,-0.05), // upper arm-8
+
+        vec3(-0.05,0.2,0.05), // upper arm-1
+        vec3(-0.05,0.2,-0.05), // upper arm-5
+        vec3(0.05,0.2,0.05), // upper arm-2
+        vec3(0.05,0.2,-0.05), // upper arm-6
+        vec3(0.05,-0.2,0.05), // upper arm-3
+        vec3(0.05,-0.2,-0.05), // upper arm-7
+        vec3(-0.05,-0.2,0.05), // upper arm-4
+        vec3(-0.05,-0.2,-0.05), // upper arm-8
+
+        //Left lower arm
+        vec3(-0.025, 0.15, 0.025), // lower arm-1
+        vec3(0.025, 0.15, 0.025), // lower arm-2
+        vec3(0.025, -0.15, 0.025), // lower arm-3
+        vec3(-0.025, -0.15, 0.025), // lower arm-4
+
+        vec3(-0.025, 0.15, -0.025), // lower arm-5
+        vec3(0.025, 0.15, -0.025), // lower arm-6
+        vec3(0.025, -0.15, -0.025), // lower arm-7
+        vec3(-0.025, -0.15, -0.025), // lower arm-8
+
+        vec3(-0.025, 0.15, 0.025), // lower arm-1
+        vec3(-0.025, 0.15, -0.025), // lower arm-5
+        vec3(0.025, 0.15, 0.025), // lower arm-2
+        vec3(0.025, 0.15, -0.025), // lower arm-6
+        vec3(0.025, -0.15, 0.025), // lower arm-3
+        vec3(0.025, -0.15, -0.025), // lower arm-7
+        vec3(-0.025, -0.15, 0.025), // lower arm-4
+        vec3(-0.025, -0.15, -0.025), // lower arm-8
+
+        //Left upper leg
+        vec3(-0.07, 0.25, 0.07), // upper leg-1
+        vec3(0.07, 0.25, 0.07), // upper leg-2
+        vec3(0.07, -0.25, 0.07), // upper leg-3
+        vec3(-0.07, -0.25, 0.07), // upper leg-4
+
+        vec3(-0.07, 0.25, -0.07), // upper leg-5
+        vec3(0.07, 0.25, -0.07), // upper leg-6
+        vec3(0.07, -0.25, -0.07), // upper leg-7
+        vec3(-0.07, -0.25, -0.07), // upper leg-8
+
+        vec3(-0.07, 0.25, 0.07), // upper leg-1
+        vec3(-0.07, 0.25, -0.07), // upper leg-5
+        vec3(0.07, 0.25, 0.07), // upper leg-2
+        vec3(0.07, 0.25, -0.07), // upper leg-6
+        vec3(0.07, -0.25, 0.07), // upper leg-3
+        vec3(0.07, -0.25, -0.07), // upper leg-7
+        vec3(-0.07, -0.25, 0.07), // upper leg-4
+        vec3(-0.07, -0.25, -0.07), // upper leg-8
         
-        vec3(-0.8,0.5,0), // K-1
-        vec3(-0.7,0.5,0), // K-2
-        vec3(-0.7,0.15,0), // K-3
-        vec3(-0.5,0.5,0), // K-4
-        vec3(-0.4,0.5,0), // K-5
-        vec3(-0.65,0,0), // K-6
-        vec3(-0.4,-0.5,0), // K-7
-        vec3(-0.5,-0.5,0), // K-8
-        vec3(-0.7,-0.15,0), // K-9
-        vec3(-0.7,-0.5,0), // K-10
-        vec3(-0.8,-0.5,0), // K-11
+        //left lower leg
+        vec3(-0.035, 0.175, 0.035), // lower leg-1
+        vec3(0.035, 0.175, 0.035), // lower leg-2
+        vec3(0.035, -0.175, 0.035), // lower leg-3
+        vec3(-0.035, -0.175, 0.035), // lower leg-4
 
-        vec3(-0.8,0.5,0.1), // K-12
-        vec3(-0.7,0.5,0.1), // K-13
-        vec3(-0.7,0.15,0.1), // K-14
-        vec3(-0.5,0.5,0.1), // K-15
-        vec3(-0.4,0.5,0.1), // K-16
-        vec3(-0.65,0,0.1), // K-17
-        vec3(-0.4,-0.5,0.1), // K-18
-        vec3(-0.5,-0.5,0.1), // K-19
-        vec3(-0.7,-0.15,0.1), // K-20
-        vec3(-0.7,-0.5,0.1), // K-21
-        vec3(-0.8,-0.5,0.1), // K-22
+        vec3(-0.035, 0.175, -0.035), // lower leg-5
+        vec3(0.035, 0.175, -0.035), // lower leg-6
+        vec3(0.035, -0.175, -0.035), // lower leg-7
+        vec3(-0.035, -0.175, -0.035), // lower leg-8
 
-        vec3(-0.8,0.5,0), // K-1
-        vec3(-0.8,0.5,0.1), // K-12
-        vec3(-0.7,0.5,0), // K-2
-        vec3(-0.7,0.5,0.1), // K-13
-        vec3(-0.7,0.15,0), // K-3
-        vec3(-0.7,0.15,0.1), // K-14
-        vec3(-0.5,0.5,0), // K-4
-        vec3(-0.5,0.5,0.1), // K-15
-        vec3(-0.4,0.5,0), // K-5
-        vec3(-0.4,0.5,0.1), // K-16
-        vec3(-0.65,0,0), // K-6
-        vec3(-0.65,0,0.1), // K-17
-        vec3(-0.4,-0.5,0), // K-7
-        vec3(-0.4,-0.5,0.1), // K-18
-        vec3(-0.5,-0.5,0), // K-8
-        vec3(-0.5,-0.5,0.1), // K-19
-        vec3(-0.8,-0.5,0), // K-11
-        vec3(-0.8,-0.5,0.1), // K-22
+        vec3(-0.035, 0.175, 0.035), // lower leg-1
+        vec3(-0.035, 0.175, -0.035), // lower leg-5
+        vec3(0.035, 0.175, 0.035), // lower leg-2
+        vec3(0.035, 0.175, -0.035), // lower leg-6
+        vec3(0.035, -0.175, 0.035), // lower leg-3
+        vec3(0.035, -0.175, -0.035), // lower leg-7
+        vec3(-0.035, -0.175, 0.035), // lower leg-4
+        vec3(-0.035, -0.175, -0.035), // lower leg-8
 
-
-        vec3(-0.2,0.5,0), // J-1
-        vec3(-0.2,0.4,0), // J-2
-        vec3(-0.08,0.4,0), // J-3
-        vec3(-0.08,-0.3,0), // J-4
-        vec3(-0.17,-0.3,0), // J-5
-        vec3(-0.185,-0.1,0), // J-6
-        vec3(-0.285,-0.1,0), // J-7
-        vec3(-0.245,-0.35,0), // J-8
-        vec3(-0.185,-0.5,0), // J-9
-        vec3(-0.08,-0.5,0), // J-10
-        vec3(-0.005,-0.35,0), // J-11
-        vec3(-0.005,0.4,0), // J-12
-        vec3(0.115,0.4,0), // J-13
-        vec3(0.115,0.5,0), // J-14
-
-        vec3(-0.2,0.5,0.1), // J-15
-        vec3(-0.2,0.4,0.1), // J-16
-        vec3(-0.08,0.4,0.1), // J-17
-        vec3(-0.08,-0.3,0.1), // J-18
-        vec3(-0.17,-0.3,0.1), // J-19
-        vec3(-0.185,-0.1,0.1), // J-20
-        vec3(-0.285,-0.1,0.1), // J-21
-        vec3(-0.245,-0.35,0.1), // J-22
-        vec3(-0.185,-0.5,0.1), // J-23
-        vec3(-0.08,-0.5,0.1), // J-24
-        vec3(-0.005,-0.35,0.1), // J-25
-        vec3(-0.005,0.4,0.1), // J-26
-        vec3(0.115,0.4,0.1), // J-27
-        vec3(0.115,0.5,0.1), // J-28
-
-        vec3(-0.2,0.5,0), // J-1
-        vec3(-0.2,0.5,0.1), // J-15
-        vec3(-0.2,0.4,0), // J-2
-        vec3(-0.2,0.4,0.1), // J-16
-        vec3(-0.08,0.4,0), // J-3
-        vec3(-0.08,0.4,0.1), // J-17
-        vec3(-0.08,-0.3,0), // J-4
-        vec3(-0.08,-0.3,0.1), // J-18
-        vec3(-0.17,-0.3,0), // J-5
-        vec3(-0.17,-0.3,0.1), // J-19
-        vec3(-0.185,-0.1,0), // J-6
-        vec3(-0.185,-0.1,0.1), // J-20
-        vec3(-0.285,-0.1,0), // J-7
-        vec3(-0.285,-0.1,0.1), // J-21
-        vec3(-0.245,-0.35,0), // J-8
-        vec3(-0.245,-0.35,0.1), // J-22
-        vec3(-0.185,-0.5,0), // J-9
-        vec3(-0.185,-0.5,0.1), // J-23
-        vec3(-0.08,-0.5,0), // J-10
-        vec3(-0.08,-0.5,0.1), // J-24
-        vec3(-0.005,-0.35,0), // J-11
-        vec3(-0.005,-0.35,0.1), // J-25
-        vec3(-0.005,0.4,0), // J-12
-        vec3(-0.005,0.4,0.1), // J-26
-        vec3(0.115,0.4,0), // J-13
-        vec3(0.115,0.4,0.1), // J-27
-        vec3(0.115,0.5,0), // J-14
-        vec3(0.115,0.5,0.1), // J-28
-
-        vec3(0.3,0.5,0), // H-1
-        vec3(0.4,0.5,0), // H-2
-        vec3(0.4,0.1,0), // H-3
-        vec3(0.6,0.1,0), // H-4
-        vec3(0.6,0.5,0), // H-5
-        vec3(0.7,0.5,0), // H-6
-        vec3(0.7,-0.5,0), // H-7
-        vec3(0.6,-0.5,0), // H-8
-        vec3(0.6,-0.1,0), // H-9
-        vec3(0.4,-0.1,0), // H-10
-        vec3(0.4,-0.5,0), // H-11
-        vec3(0.3,-0.5,0), // H-12
-
-        vec3(0.3,0.5,0.1), // H-13
-        vec3(0.4,0.5,0.1), // H-14
-        vec3(0.4,0.1,0.1), // H-15
-        vec3(0.6,0.1,0.1), // H-16
-        vec3(0.6,0.5,0.1), // H-17
-        vec3(0.7,0.5,0.1), // H-18
-        vec3(0.7,-0.5,0.1), // H-19
-        vec3(0.6,-0.5,0.1), // H-20
-        vec3(0.6,-0.1,0.1), // H-21
-        vec3(0.4,-0.1,0.1), // H-22
-        vec3(0.4,-0.5,0.1), // H-23
-        vec3(0.3,-0.5,0.1), // H-24
-
-        vec3(0.3,0.5,0), // H-1
-        vec3(0.3,0.5,0.1), // H-13
-        vec3(0.4,0.5,0), // H-2
-        vec3(0.4,0.5,0.1), // H-14
-        vec3(0.4,0.1,0), // H-3
-        vec3(0.4,0.1,0.1), // H-15
-        vec3(0.6,0.1,0), // H-4
-        vec3(0.6,0.1,0.1), // H-16
-        vec3(0.6,0.5,0), // H-5
-        vec3(0.6,0.5,0.1), // H-17
-        vec3(0.7,0.5,0), // H-6
-        vec3(0.7,0.5,0.1), // H-18
-        vec3(0.7,-0.5,0), // H-7
-        vec3(0.7,-0.5,0.1), // H-19
-        vec3(0.6,-0.5,0), // H-8
-        vec3(0.6,-0.5,0.1), // H-20
-        vec3(0.6,-0.1,0), // H-9
-        vec3(0.6,-0.1,0.1), // H-21
-        vec3(0.4,-0.1,0), // H-10
-        vec3(0.4,-0.1,0.1), // H-22
-        vec3(0.4,-0.5,0), // H-11
-        vec3(0.4,-0.5,0.1), // H-23
-        vec3(0.3,-0.5,0), // H-12
-        vec3(0.3,-0.5,0.1), // H-24
-
-        /* H's POINTS
-        vec3(0.3,0.5,0), // H-1
-        vec3(0.4,0.5,0), // H-2
-        vec3(0.4,0.1,0), // H-3
-        vec3(0.6,0.1,0), // H-4
-        vec3(0.6,0.5,0), // H-5
-        vec3(0.7,0.5,0), // H-6
-        vec3(0.7,-0.5,0), // H-7
-        vec3(0.6,-0.5,0), // H-8
-        vec3(0.6,-0.1,0), // H-9
-        vec3(0.4,-0.1,0), // H-10
-        vec3(0.4,-0.5,0), // H-11
-        vec3(0.3,-0.5,0), // H-12
-
-        vec3(0.3,0.5,0.1), // H-13
-        vec3(0.4,0.5,0.1), // H-14
-        vec3(0.4,0.1,0.1), // H-15
-        vec3(0.6,0.1,0.1), // H-16
-        vec3(0.6,0.5,0.1), // H-17
-        vec3(0.7,0.5,0.1), // H-18
-        vec3(0.7,-0.5,0.1), // H-19
-        vec3(0.6,-0.5,0.1), // H-20
-        vec3(0.6,-0.1,0.1), // H-21
-        vec3(0.4,-0.1,0.1), // H-22
-        vec3(0.4,-0.5,0.1), // H-23
-        vec3(0.3,-0.5,0.1), // H-24
-        */
-
-        /* J's POINTS
-        vec3(-0.2,0.5,0), // J-1
-        vec3(-0.2,0.4,0), // J-2
-        vec3(-0.08,0.4,0), // J-3
-        vec3(-0.08,-0.3,0), // J-4
-        vec3(-0.17,-0.3,0), // J-5
-        vec3(-0.185,-0.1,0), // J-6
-        vec3(-0.285,-0.1,0), // J-7
-        vec3(-0.245,-0.35,0), // J-8
-        vec3(-0.185,-0.5,0), // J-9
-        vec3(-0.08,-0.5,0), // J-10
-        vec3(-0.005,-0.35,0), // J-11
-        vec3(-0.005,0.4,0), // J-12
-        vec3(0.115,0.4,0), // J-13
-        vec3(0.115,0.5,0), // J-14
-
-        vec3(-0.2,0.5,0.1), // J-15
-        vec3(-0.2,0.4,0.1), // J-16
-        vec3(-0.08,0.4,0.1), // J-17
-        vec3(-0.08,-0.3,0.1), // J-18
-        vec3(-0.17,-0.3,0.1), // J-19
-        vec3(-0.185,-0.1,0.1), // J-20
-        vec3(-0.285,-0.1,0.1), // J-21
-        vec3(-0.245,-0.35,0.1), // J-22
-        vec3(-0.185,-0.5,0.1), // J-23
-        vec3(-0.08,-0.5,0.1), // J-24
-        vec3(-0.005,-0.35,0.1), // J-25
-        vec3(-0.005,0.4,0.1), // J-26
-        vec3(0.115,0.4,0.1), // J-27
-        vec3(0.115,0.5,0.1), // J-28
-        */
-
-        /* K's POINTS
-        vec3(-0.8,0.5,0), // K-1
-        vec3(-0.7,0.5,0), // K-2
-        vec3(-0.5,0.5,0), // K-3
-        vec3(-0.4,0.5,0), // K-4
-        vec3(-0.8,-0.5,0), // K-5
-        vec3(-0.7,-0.5,0), // K-6
-        vec3(-0.5,-0.5,0), // K-7
-        vec3(-0.4,-0.5,0), // K-8
-        vec3(-0.7,0.15,0), // K-9
-        vec3(-0.7,-0.15,0), // K-10
-        vec3(-0.65,0,0), // K-11
-
-        vec3(-0.8,0.5,0.1), // K-12
-        vec3(-0.7,0.5,0.1), // K-13
-        vec3(-0.5,0.5,0.1), // K-14
-        vec3(-0.4,0.5,0.1), // K-15
-        vec3(-0.8,-0.5,0.1), // K-16
-        vec3(-0.7,-0.5,0.1), // K-17
-        vec3(-0.5,-0.5,0.1), // K-18
-        vec3(-0.4,-0.5,0.1), // K-19
-        vec3(-0.7,0.15,0.1), // K-20
-        vec3(-0.7,-0.15,0.1), // K-21
-        vec3(-0.65,0,0.1), // K-22
-        */
 
     ];
     
@@ -439,55 +320,53 @@ function render() {
   
         
     
-    gl.drawArrays(gl.LINE_LOOP,0,11);
-    gl.drawArrays(gl.LINE_LOOP,11,11);
+    gl.drawArrays(gl.LINE_LOOP,0,4); //Torso앞면
+    gl.drawArrays(gl.LINE_LOOP,4,4); //Torso뒷면
 
-    gl.drawArrays(gl.LINES,22,2); // 
-    gl.drawArrays(gl.LINES,24,2); //
-    gl.drawArrays(gl.LINES,26,2); //  
-    gl.drawArrays(gl.LINES,28,2); // 
-    gl.drawArrays(gl.LINES,30,2); // 
-    gl.drawArrays(gl.LINES,32,2); // 
-    gl.drawArrays(gl.LINES,34,2); // 
-    gl.drawArrays(gl.LINES,36,2); // 
-    gl.drawArrays(gl.LINES,38,2); //
+    gl.drawArrays(gl.LINES,8,2); //Torso앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,10,2); //Torso앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,12,2); //Torso앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,14,2); //Torso앞뒷면 연결-4
 
+    gl.drawArrays(gl.LINE_LOOP,16,4); //Head앞면
+    gl.drawArrays(gl.LINE_LOOP,20,4); //Head뒷면
 
-    gl.drawArrays(gl.LINE_LOOP,40,14);
-    gl.drawArrays(gl.LINE_LOOP,54,14);
+    gl.drawArrays(gl.LINES,24,2); //Head앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,26,2); //Head앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,28,2); //Head앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,30,2); //Head앞뒷면 연결-4
+    
+    gl.drawArrays(gl.LINE_LOOP,32,4); //Left upper arm앞면
+    gl.drawArrays(gl.LINE_LOOP,36,4); //Left upper arm뒷면
 
-    gl.drawArrays(gl.LINES,68,2);
-    gl.drawArrays(gl.LINES,70,2);
-    gl.drawArrays(gl.LINES,72,2);
-    gl.drawArrays(gl.LINES,74,2);
-    gl.drawArrays(gl.LINES,76,2);
-    gl.drawArrays(gl.LINES,78,2);
-    gl.drawArrays(gl.LINES,80,2);
-    gl.drawArrays(gl.LINES,82,2);
-    gl.drawArrays(gl.LINES,84,2);
-    gl.drawArrays(gl.LINES,86,2);
-    gl.drawArrays(gl.LINES,88,2);
-    gl.drawArrays(gl.LINES,90,2);
-    gl.drawArrays(gl.LINES,92,2);
-    gl.drawArrays(gl.LINES,94,2);
+    gl.drawArrays(gl.LINES,40,2); //Left upper arm앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,42,2); //Left upper arm앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,44,2); //Left upper arm앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,46,2); //Left upper arm앞뒷면 연결-4
 
-    gl.drawArrays(gl.LINE_LOOP,96,12);
-    gl.drawArrays(gl.LINE_LOOP,108,12);
+    gl.drawArrays(gl.LINE_LOOP,48,4); //Left lower arm앞면
+    gl.drawArrays(gl.LINE_LOOP,52,4); //Left lower arm뒷면
 
-    gl.drawArrays(gl.LINES,120,2);
-    gl.drawArrays(gl.LINES,122,2);
-    gl.drawArrays(gl.LINES,124,2);
-    gl.drawArrays(gl.LINES,126,2);
-    gl.drawArrays(gl.LINES,128,2);
-    gl.drawArrays(gl.LINES,130,2);
-    gl.drawArrays(gl.LINES,132,2);
-    gl.drawArrays(gl.LINES,134,2);
-    gl.drawArrays(gl.LINES,136,2);
-    gl.drawArrays(gl.LINES,138,2);
-    gl.drawArrays(gl.LINES,140,2);
-    gl.drawArrays(gl.LINES,142,2);
+    gl.drawArrays(gl.LINES,56,2); //Left lower arm앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,58,2); //Left lower arm앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,60,2); //Left lower arm앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,62,2); //Left lower arm앞뒷면 연결-4
 
-    gl.drawArrays(gl.TRIANGLES,0,3);
+    gl.drawArrays(gl.LINE_LOOP,64,4); //Left upper leg앞면
+    gl.drawArrays(gl.LINE_LOOP,68,4); //Left upper leg뒷면
+
+    gl.drawArrays(gl.LINES,72,2); //Left upper leg앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,74,2); //Left upper leg앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,76,2); //Left upper leg앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,78,2); //Left upper leg앞뒷면 연결-4
+
+    gl.drawArrays(gl.LINE_LOOP,80,4); //Left lower leg앞면
+    gl.drawArrays(gl.LINE_LOOP,84,4); //Left lower leg뒷면
+
+    gl.drawArrays(gl.LINES,88,2); //Left lower leg앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,90,2); //Left lower leg앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,92,2); //Left lower leg앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,94,2); //Left lower leg앞뒷면 연결-4
 
     requestAnimationFrame(render);//요기는 강의노트와 스펠링이 다름
 
