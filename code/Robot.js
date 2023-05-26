@@ -167,6 +167,86 @@ window.onload = function init()
         vec3(-0.035, -0.175, 0.035), // lower leg-4
         vec3(-0.035, -0.175, -0.035), // lower leg-8
 
+        //Right upper arm
+        vec3(-0.05,0.2,0.05), // upper arm-1
+        vec3(0.05,0.2,0.05), // upper arm-2
+        vec3(0.05,-0.2,0.05), // upper arm-3
+        vec3(-0.05,-0.2,0.05), // upper arm-4
+
+        vec3(-0.05,0.2,-0.05), // upper arm-5
+        vec3(0.05,0.2,-0.05), // upper arm-6
+        vec3(0.05,-0.2,-0.05), // upper arm-7
+        vec3(-0.05,-0.2,-0.05), // upper arm-8
+
+        vec3(-0.05,0.2,0.05), // upper arm-1
+        vec3(-0.05,0.2,-0.05), // upper arm-5
+        vec3(0.05,0.2,0.05), // upper arm-2
+        vec3(0.05,0.2,-0.05), // upper arm-6
+        vec3(0.05,-0.2,0.05), // upper arm-3
+        vec3(0.05,-0.2,-0.05), // upper arm-7
+        vec3(-0.05,-0.2,0.05), // upper arm-4
+        vec3(-0.05,-0.2,-0.05), // upper arm-8
+
+        //Right lower arm
+        vec3(-0.025, 0.15, 0.025), // lower arm-1
+        vec3(0.025, 0.15, 0.025), // lower arm-2
+        vec3(0.025, -0.15, 0.025), // lower arm-3
+        vec3(-0.025, -0.15, 0.025), // lower arm-4
+
+        vec3(-0.025, 0.15, -0.025), // lower arm-5
+        vec3(0.025, 0.15, -0.025), // lower arm-6
+        vec3(0.025, -0.15, -0.025), // lower arm-7
+        vec3(-0.025, -0.15, -0.025), // lower arm-8
+
+        vec3(-0.025, 0.15, 0.025), // lower arm-1
+        vec3(-0.025, 0.15, -0.025), // lower arm-5
+        vec3(0.025, 0.15, 0.025), // lower arm-2
+        vec3(0.025, 0.15, -0.025), // lower arm-6
+        vec3(0.025, -0.15, 0.025), // lower arm-3
+        vec3(0.025, -0.15, -0.025), // lower arm-7
+        vec3(-0.025, -0.15, 0.025), // lower arm-4
+        vec3(-0.025, -0.15, -0.025), // lower arm-8
+
+        //Right upper leg
+        vec3(-0.07, 0.25, 0.07), // upper leg-1
+        vec3(0.07, 0.25, 0.07), // upper leg-2
+        vec3(0.07, -0.25, 0.07), // upper leg-3
+        vec3(-0.07, -0.25, 0.07), // upper leg-4
+
+        vec3(-0.07, 0.25, -0.07), // upper leg-5
+        vec3(0.07, 0.25, -0.07), // upper leg-6
+        vec3(0.07, -0.25, -0.07), // upper leg-7
+        vec3(-0.07, -0.25, -0.07), // upper leg-8
+
+        vec3(-0.07, 0.25, 0.07), // upper leg-1
+        vec3(-0.07, 0.25, -0.07), // upper leg-5
+        vec3(0.07, 0.25, 0.07), // upper leg-2
+        vec3(0.07, 0.25, -0.07), // upper leg-6
+        vec3(0.07, -0.25, 0.07), // upper leg-3
+        vec3(0.07, -0.25, -0.07), // upper leg-7
+        vec3(-0.07, -0.25, 0.07), // upper leg-4
+        vec3(-0.07, -0.25, -0.07), // upper leg-8
+        
+        //Right lower leg
+        vec3(-0.035, 0.175, 0.035), // lower leg-1
+        vec3(0.035, 0.175, 0.035), // lower leg-2
+        vec3(0.035, -0.175, 0.035), // lower leg-3
+        vec3(-0.035, -0.175, 0.035), // lower leg-4
+
+        vec3(-0.035, 0.175, -0.035), // lower leg-5
+        vec3(0.035, 0.175, -0.035), // lower leg-6
+        vec3(0.035, -0.175, -0.035), // lower leg-7
+        vec3(-0.035, -0.175, -0.035), // lower leg-8
+
+        vec3(-0.035, 0.175, 0.035), // lower leg-1
+        vec3(-0.035, 0.175, -0.035), // lower leg-5
+        vec3(0.035, 0.175, 0.035), // lower leg-2
+        vec3(0.035, 0.175, -0.035), // lower leg-6
+        vec3(0.035, -0.175, 0.035), // lower leg-3
+        vec3(0.035, -0.175, -0.035), // lower leg-7
+        vec3(-0.035, -0.175, 0.035), // lower leg-4
+        vec3(-0.035, -0.175, -0.035), // lower leg-8
+
 
     ];
     
@@ -258,6 +338,38 @@ function render() {
     gl.drawArrays(gl.LINES,90,2); //Left lower leg앞뒷면 연결-2
     gl.drawArrays(gl.LINES,92,2); //Left lower leg앞뒷면 연결-3
     gl.drawArrays(gl.LINES,94,2); //Left lower leg앞뒷면 연결-4
+
+    gl.drawArrays(gl.LINE_LOOP,96,4); //Right upper arm앞면
+    gl.drawArrays(gl.LINE_LOOP,100,4); //Right upper arm뒷면
+
+    gl.drawArrays(gl.LINES,104,2); //Right upper arm앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,106,2); //Right upper arm앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,108,2); //Right upper arm앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,110,2); //Right upper arm앞뒷면 연결-4
+
+    gl.drawArrays(gl.LINE_LOOP,112,4); //Right lower arm앞면
+    gl.drawArrays(gl.LINE_LOOP,116,4); //Right lower arm뒷면
+
+    gl.drawArrays(gl.LINES,120,2); //Right lower arm앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,122,2); //Right lower arm앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,124,2); //Right lower arm앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,126,2); //Right lower arm앞뒷면 연결-4
+
+    gl.drawArrays(gl.LINE_LOOP,128,4); //Right upper leg앞면
+    gl.drawArrays(gl.LINE_LOOP,132,4); //Right upper leg뒷면
+
+    gl.drawArrays(gl.LINES,136,2); //Right upper leg앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,138,2); //Right upper leg앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,140,2); //Right upper leg앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,142,2); //Right upper leg앞뒷면 연결-4
+
+    gl.drawArrays(gl.LINE_LOOP,144,4); //Right lower leg앞면
+    gl.drawArrays(gl.LINE_LOOP,148,4); //Right lower leg뒷면
+
+    gl.drawArrays(gl.LINES,152,2); //Right lower leg앞뒷면 연결-1
+    gl.drawArrays(gl.LINES,154,2); //Right lower leg앞뒷면 연결-2
+    gl.drawArrays(gl.LINES,156,2); //Right lower leg앞뒷면 연결-3
+    gl.drawArrays(gl.LINES,158,2); //Right lower leg앞뒷면 연결-4
 
     requestAnimationFrame(render);//요기는 강의노트와 스펠링이 다름
 
