@@ -3,16 +3,16 @@
 var gl;
 
 var theta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-var Torso = 0;
-var Head = 1;
-var LeftUpperArm = 2;
-var LeftLowerArm = 3;
-var LeftUpperLeg = 4;
-var LeftLowerLeg = 5;
-var RightUpperArm = 6;
-var RightLowerArm = 7;
-var RightUpperLeg = 8;
-var RightLowerLeg = 9;
+var TorsoId = 0;
+var HeadId = 1;
+var LeftUpperArmId = 2;
+var LeftLowerArmId = 3;
+var LeftUpperLegId = 4;
+var LeftLowerLegId = 5;
+var RightUpperArmId = 6;
+var RightLowerArmId = 7;
+var RightUpperLegId = 8;
+var RightLowerLegId = 9;
 
 var TORSO_HEIGHT = 0.7;
 var TORSO_WIDTH = 0.5;
@@ -24,6 +24,16 @@ var BETWEEN_LEGS_WIDTH = 0.12;
 var UPPER_LEG_HEIGHT = 0.5;
 var UPPER_LEG_WIDTH = 0.14;
 var LOWER_LEG_HEIGHT = 0.35;
+
+
+var figure = [];
+
+var numNodes = 10;
+//생성하려는 총 node 수(몸통, 머리 , ... 오른쪽 윗다리, 오른쪽 아랫다리)
+
+var stack = [];
+
+
 
 var modelViewMatrix;
 var modelViewMatrixLoc;
@@ -263,6 +273,12 @@ window.onload = function init() {
     vec3(0.035, -0.175, -0.035), // lower leg-7
     vec3(-0.035, -0.175, 0.035), // lower leg-4
     vec3(-0.035, -0.175, -0.035), // lower leg-8
+
+    vec3(-1,0,0), // x축
+    vec3(1,0,0), // x축
+
+    vec3(0,1,0), // y축
+    vec3(0,-1,0), // y축
   ];
 
   gl.viewport(0, 0, canvas.width, canvas.height);
@@ -293,10 +309,102 @@ window.onload = function init() {
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
   gl.uniformMatrix4fv(projectionMatirxLoc, false, flatten(projectionMatrix));
 
+  for(var i = 0; i<numNodes; i++){
+    figure[i] = createNode(null, null, null, null);
+  }
+
   render();
 };
+/*
+* transform : 4 X 4 transfrom matrix
+* render : robot의 각 부위를 그리는 함수(ex: torso())
+*/
+
+function createNode(transform, render, sibling, child){
+  var node = {
+    transform : transform,
+    render : render,
+    sibling : sibling,
+    child : child,
+  }
+  return node;
+}
+
+function initNodes(Id){
+  var m = mat4();
+  switch(Id){
+    case TorsoId:
+      m = rotate(theta[TorsoId], 0, 1, 0);
+      figure[TorsoId] = createNode(m, torso, null, HeadId);
+      break;
+    
+    case HeadId:
+      m = rotate(theta[HeadId], 0, 1, 0);
+      figure[HeadId] = createNode(m, head, LeftUpperArmId, null);
+      break;
+
+    case LeftUpperArmId:
+      m = rotate(theta[LeftUpperArmId], 0, 1, 0);
+      figure[LeftUpperArmId] = createNode(m, leftUpperArm, RightUpperArmId, LeftLowerArmId);
+      break;
+    
+    case RightUpperArmId:
+      m = rotate(theta[RightUpperArmId], 0, 1, 0);
+      figure[RightUpperArmId] = createNode(m, rightUpperArm, LeftUpperLegId, RightLowerArmId);
+      break;
+    
+    case LeftUpperLegId:
+      m = rotate(theta[LeftUpperLegId], 0, 1, 0);
+      figure[LeftUpperLegId] = createNode(m, leftUpperLeg, RightUpperLegId, LeftLowerLegId);
+      break;
+    
+    case RightUpperLegId:
+      m = rotate(theta[RightUpperLegId], 0, 1, 0);
+      figure[RightUpperLegId] = createNode(m, rightUpperLeg, null, RightLowerLegId); 
+      break;
+
+    case LeftLowerArmId:
+      m = rotate(theta[LeftLowerArmId], 0, 1, 0);
+      figure[LeftLowerArmId] = createNode(m, leftLowerArm, null, null);
+      break;
+    
+    case RightLowerArmId:
+      m = rotate(theta[RightLowerArmId], 0, 1, 0);
+      figure[RightLowerArmId] = createNode(m, rightLowerArm, null, null);
+      break;
+
+    case LeftLowerLegId:
+      m = rotate(theta[LeftLowerLegId], 0, 1, 0);
+      figure[LeftLowerLegId] = createNode(m, leftLowerLeg, null, null);
+      break;
+    
+    case RightLowerLegId:
+      m = rotate(theta[RightLowerLegId], 0, 1, 0);
+      figure[RightLowerLegId] = createNode(m, rightLowerLeg, null, null);
+      break;
+  }
+}
+function traverse(Id){
+  if(Id == null)
+    return;
+  
+  stack.push(modelViewMatrix);
+  modelViewMatrix = mult(modelViewMatrix, figure[Id].transform);
+  figure[Id].render();
+
+  if(figure[Id].child != null){
+    traverse(figure[Id].child);
+  }
+
+  modelViewMatrix = stack.pop();
+
+  if(figure[Id].sibling != null){
+    traverse(figure[Id].sibling);
+  }
+}
 
 function torso() {
+  
   var instanceMatrix = translate(0.0, 0.5 * TORSO_HEIGHT - 0.15, 0.0);
   var t = mult(modelViewMatrix, instanceMatrix);
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
@@ -307,7 +415,7 @@ function torso() {
   gl.drawArrays(gl.LINES, 10, 2); //Torso앞뒷면 연결-2
   gl.drawArrays(gl.LINES, 12, 2); //Torso앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 14, 2); //Torso앞뒷면 연결-4
-
+  
   return t;
 }
 
@@ -484,5 +592,14 @@ function render() {
   modelViewMatrix = lookAt(eye, at, up);
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
+  gl.drawArrays(gl.LINES, 160, 2); // x축
+  gl.drawArrays(gl.LINES, 162, 2); // y축
+
+  for(var i = 0; i < numNodes; i++){
+    initNodes(i);
+  }
+  traverse(TorsoId);
+
+  
   requestAnimationFrame(render); //요기는 강의노트와 스펠링이 다름
 }
