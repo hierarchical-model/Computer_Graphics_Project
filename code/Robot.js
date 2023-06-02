@@ -404,7 +404,6 @@ function traverse(Id){
 }
 
 function torso() {
-  
   var instanceMatrix = translate(0.0, 0.5 * TORSO_HEIGHT - 0.15, 0.0);
   var t = mult(modelViewMatrix, instanceMatrix);
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
@@ -415,13 +414,14 @@ function torso() {
   gl.drawArrays(gl.LINES, 10, 2); //Torso앞뒷면 연결-2
   gl.drawArrays(gl.LINES, 12, 2); //Torso앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 14, 2); //Torso앞뒷면 연결-4
-  
-  return t;
+
+  modelViewMatrix = t;
 }
 
 function head() {
   var instanceMatrix = translate(0.0, 0.5 * (TORSO_HEIGHT + HEAD_HEIGHT), 0.0);
   var t = mult(modelViewMatrix, instanceMatrix);
+  
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 16, 4); //Head앞면
   gl.drawArrays(gl.LINE_LOOP, 20, 4); //Head뒷면
@@ -431,7 +431,7 @@ function head() {
   gl.drawArrays(gl.LINES, 28, 2); //Head앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 30, 2); //Head앞뒷면 연결-4
 
-  return t;
+  modelViewMatrix = t;
 }
 
 function leftUpperArm() {
@@ -450,7 +450,7 @@ function leftUpperArm() {
   gl.drawArrays(gl.LINES, 44, 2); //Left upper arm앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 46, 2); //Left upper arm앞뒷면 연결-4
 
-  return t;
+  modelViewMatrix = t;
 }
 
 function leftLowerArm() {
@@ -469,13 +469,13 @@ function leftLowerArm() {
   gl.drawArrays(gl.LINES, 60, 2); //Left lower arm앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 62, 2); //Left lower arm앞뒷면 연결-4
 
-  return t;
+  modelViewMatrix = t;
 }
 
 function leftUpperLeg() {
   var instanceMatrix = translate(
     -0.5 * (BETWEEN_LEGS_WIDTH + UPPER_LEG_WIDTH),
-    0.0,
+    -0.5 * (TORSO_HEIGHT + UPPER_LEG_HEIGHT),
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
@@ -488,7 +488,7 @@ function leftUpperLeg() {
   gl.drawArrays(gl.LINES, 76, 2); //Left upper leg앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 78, 2); //Left upper leg앞뒷면 연결-4
 
-  return t;
+  modelViewMatrix = t;
 }
 
 function leftLowerLeg() {
@@ -507,7 +507,7 @@ function leftLowerLeg() {
   gl.drawArrays(gl.LINES, 92, 2); //Left lower leg앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 94, 2); //Left lower leg앞뒷면 연결-4
 
-  return t;
+  modelViewMatrix = t;
 }
 
 function rightUpperArm() {
@@ -526,7 +526,7 @@ function rightUpperArm() {
   gl.drawArrays(gl.LINES, 108, 2); //Right upper arm앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 110, 2); //Right upper arm앞뒷면 연결-4
 
-  return t;
+  modelViewMatrix = t;
 }
 
 function rightLowerArm() {
@@ -545,13 +545,13 @@ function rightLowerArm() {
   gl.drawArrays(gl.LINES, 124, 2); //Right lower arm앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 126, 2); //Right lower arm앞뒷면 연결-4
 
-  return t;
+  modelViewMatrix = t;
 }
 
 function rightUpperLeg() {
   var instanceMatrix = translate(
     0.5 * (BETWEEN_LEGS_WIDTH + UPPER_LEG_WIDTH),
-    0.0,
+    -0.5 * (TORSO_HEIGHT + UPPER_LEG_HEIGHT),
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
@@ -564,7 +564,7 @@ function rightUpperLeg() {
   gl.drawArrays(gl.LINES, 140, 2); //Right upper leg앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 142, 2); //Right upper leg앞뒷면 연결-4
 
-  return t;
+  modelViewMatrix = t;
 }
 
 function rightLowerLeg() {
@@ -583,7 +583,7 @@ function rightLowerLeg() {
   gl.drawArrays(gl.LINES, 156, 2); //Right lower leg앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 158, 2); //Right lower leg앞뒷면 연결-4
 
-  return t;
+  modelViewMatrix = t;
 }
 
 function render() {
