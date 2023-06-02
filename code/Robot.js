@@ -2,6 +2,8 @@
 
 var gl;
 
+var testTheta = 0;
+
 var theta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var TorsoId = 0;
 var HeadId = 1;
@@ -330,56 +332,56 @@ function createNode(transform, render, sibling, child){
   return node;
 }
 
-function initNodes(Id){
+function initNodes(Id, Xaxis, Yaxis, Zaxis){
   var m = mat4();
   switch(Id){
     case TorsoId:
-      m = rotate(theta[TorsoId], 0, 1, 0);
+      m = rotate(theta[TorsoId], Xaxis, Yaxis, Zaxis);
       figure[TorsoId] = createNode(m, torso, null, HeadId);
       break;
     
     case HeadId:
-      m = rotate(theta[HeadId], 0, 1, 0);
+      m = rotate(theta[HeadId], Xaxis, Yaxis, Zaxis);
       figure[HeadId] = createNode(m, head, LeftUpperArmId, null);
       break;
 
     case LeftUpperArmId:
-      m = rotate(theta[LeftUpperArmId], 0, 1, 0);
+      m = rotate(theta[LeftUpperArmId], Xaxis, Yaxis, Zaxis);
       figure[LeftUpperArmId] = createNode(m, leftUpperArm, RightUpperArmId, LeftLowerArmId);
       break;
     
     case RightUpperArmId:
-      m = rotate(theta[RightUpperArmId], 0, 1, 0);
+      m = rotate(theta[RightUpperArmId], Xaxis, Yaxis, Zaxis);
       figure[RightUpperArmId] = createNode(m, rightUpperArm, LeftUpperLegId, RightLowerArmId);
       break;
     
     case LeftUpperLegId:
-      m = rotate(theta[LeftUpperLegId], 0, 1, 0);
+      m = rotate(theta[LeftUpperLegId], Xaxis, Yaxis, Zaxis);
       figure[LeftUpperLegId] = createNode(m, leftUpperLeg, RightUpperLegId, LeftLowerLegId);
       break;
     
     case RightUpperLegId:
-      m = rotate(theta[RightUpperLegId], 0, 1, 0);
+      m = rotate(theta[RightUpperLegId], Xaxis, Yaxis, Zaxis);
       figure[RightUpperLegId] = createNode(m, rightUpperLeg, null, RightLowerLegId); 
       break;
 
     case LeftLowerArmId:
-      m = rotate(theta[LeftLowerArmId], 0, 1, 0);
+      m = rotate(theta[LeftLowerArmId], Xaxis, Yaxis, Zaxis);
       figure[LeftLowerArmId] = createNode(m, leftLowerArm, null, null);
       break;
     
     case RightLowerArmId:
-      m = rotate(theta[RightLowerArmId], 0, 1, 0);
+      m = rotate(theta[RightLowerArmId], Xaxis, Yaxis, Zaxis);
       figure[RightLowerArmId] = createNode(m, rightLowerArm, null, null);
       break;
 
     case LeftLowerLegId:
-      m = rotate(theta[LeftLowerLegId], 0, 1, 0);
+      m = rotate(theta[LeftLowerLegId], Xaxis, Yaxis, Zaxis);
       figure[LeftLowerLegId] = createNode(m, leftLowerLeg, null, null);
       break;
     
     case RightLowerLegId:
-      m = rotate(theta[RightLowerLegId], 0, 1, 0);
+      m = rotate(theta[RightLowerLegId], Xaxis, Yaxis, Zaxis);
       figure[RightLowerLegId] = createNode(m, rightLowerLeg, null, null);
       break;
   }
@@ -586,6 +588,10 @@ function rightLowerLeg() {
   modelViewMatrix = t;
 }
 
+function palms_together(){
+  initNodes(leftUpperArm);
+}
+
 function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   eye = vec3(eyeX, eyeY, eyeZ);
@@ -596,7 +602,7 @@ function render() {
   gl.drawArrays(gl.LINES, 162, 2); // y축
 
   for(var i = 0; i < numNodes; i++){
-    initNodes(i);
+    initNodes(i,0,1,0);
   }
   traverse(TorsoId);
 
