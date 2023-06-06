@@ -2,7 +2,7 @@
 
 var gl;
 
-var testTheta = 0;
+var changeTheta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 var theta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var TorsoId = 0;
@@ -70,6 +70,17 @@ window.onload = function init() {
     eyeY = 3.5;
     eyeZ = 2;
   };
+
+  document.getElementById("test_rotation").onclick = function() {
+    changeTheta[LeftUpperArmId] = -0.5;
+    changeTheta[RightUpperArmId] = 0.5;
+  }
+  document.getElementById("pause").onclick = function() {
+    changeTheta[LeftUpperArmId] = 0;
+    changeTheta[RightUpperArmId] = 0;
+  }
+  
+  
 
   gl = WebGLUtils.setupWebGL(canvas);
   if (!gl) {
@@ -346,12 +357,12 @@ function initNodes(Id, Xaxis, Yaxis, Zaxis){
       break;
 
     case LeftUpperArmId:
-      m = rotate(theta[LeftUpperArmId], Xaxis, Yaxis, Zaxis);
+      m = rotate(theta[LeftUpperArmId], 1, 0, 0);
       figure[LeftUpperArmId] = createNode(m, leftUpperArm, RightUpperArmId, LeftLowerArmId);
       break;
     
     case RightUpperArmId:
-      m = rotate(theta[RightUpperArmId], Xaxis, Yaxis, Zaxis);
+      m = rotate(theta[RightUpperArmId], 1, 0, 0);
       figure[RightUpperArmId] = createNode(m, rightUpperArm, LeftUpperLegId, RightLowerArmId);
       break;
     
@@ -366,7 +377,7 @@ function initNodes(Id, Xaxis, Yaxis, Zaxis){
       break;
 
     case LeftLowerArmId:
-      m = rotate(theta[LeftLowerArmId], Xaxis, Yaxis, Zaxis);
+      m = rotate(theta[LeftLowerArmId], 1, 0, Zaxis);
       figure[LeftLowerArmId] = createNode(m, leftLowerArm, null, null);
       break;
     
@@ -402,6 +413,40 @@ function traverse(Id){
 
   if(figure[Id].sibling != null){
     traverse(figure[Id].sibling);
+  }
+}
+function translateAxis(Id, radius, rotateAxis){
+  var newMatrix = mat4();
+  var rowAxis;
+  var colAxis;
+  /**
+   * X axis : rotateAxis == 1 -> row: Z, col: Y
+   * Y axis : rotateAxis == 2 -> row: X, col: Z
+   * Z axis : rotateAxis == 3 -> row: X, col: Y
+   */
+  if(theta[Id] >= 0){
+    rowAxis = -1 * Math.sin( radians( theta[Id] ) );
+    colAxis = -2 * ( Math.sin( radians( (theta[Id]/2) ) ) );
+  } else {
+    rowAxis = -1 * Math.sin( radians( theta[Id] ) );
+    colAxis = 2 * (Math.sin( radians( (theta[Id]/2) ) ));
+  }
+
+  if(rotateAxis == 1){
+    newMatrix = mult(newMatrix, translate(0, (radius * colAxis), (radius * rowAxis)));
+    return newMatrix;
+  }
+  else if(rotateAxis == 2){
+    newMatrix = mult(newMatrix, translate((radius * rowAxis), 0, (radius * colAxis)));
+    return newMatrix;
+  }
+  else if(rotateAxis == 3){
+    newMatrix = mult(newMatrix, translate((radius * rowAxis), (radius * colAxis), 0));
+    return newMatrix;
+  }
+  else{
+    console.log("잘못된 axis 입력");
+    return null;
   }
 }
 
@@ -443,6 +488,8 @@ function leftUpperArm() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, translateAxis(LeftUpperArmId, UPPER_ARM_HEIGHT/2, 1));
+  
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 32, 4); //Left upper arm앞면
   gl.drawArrays(gl.LINE_LOOP, 36, 4); //Left upper arm뒷면
@@ -519,6 +566,7 @@ function rightUpperArm() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, translateAxis(RightUpperArmId, UPPER_ARM_HEIGHT/2, 1));
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 96, 4); //Right upper arm앞면
   gl.drawArrays(gl.LINE_LOOP, 100, 4); //Right upper arm뒷면
@@ -596,16 +644,33 @@ function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   eye = vec3(eyeX, eyeY, eyeZ);
   modelViewMatrix = lookAt(eye, at, up);
+
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
   gl.drawArrays(gl.LINES, 160, 2); // x축
   gl.drawArrays(gl.LINES, 162, 2); // y축
+
+  theta[LeftUpperArmId] = theta[LeftUpperArmId] + changeTheta[LeftUpperArmId];
+  theta[RightUpperArmId] = theta[RightUpperArmId] + changeTheta[RightUpperArmId];
+  
+  if(theta[LeftUpperArmId] > 90){
+    changeTheta[LeftUpperArmId] = -0.5;
+  }
+  if(theta[LeftUpperArmId] < -90){
+    changeTheta[LeftUpperArmId] = 0.5;
+  }
+  if(theta[RightUpperArmId] > 90){
+    changeTheta[RightUpperArmId] = -0.5;
+  }
+  if(theta[RightUpperArmId] < -90){
+    changeTheta[RightUpperArmId] = 0.5;
+  }
+
 
   for(var i = 0; i < numNodes; i++){
     initNodes(i,0,1,0);
   }
   traverse(TorsoId);
 
-  
   requestAnimationFrame(render); //요기는 강의노트와 스펠링이 다름
 }
