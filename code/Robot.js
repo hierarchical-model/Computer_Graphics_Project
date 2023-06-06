@@ -77,6 +77,7 @@ window.onload = function init() {
   };
   document.getElementById("seesky").onClick = function () {
     dir3 = !dir3;
+    console.log(dir3);
   };
 
   gl = WebGLUtils.setupWebGL(canvas);
@@ -638,16 +639,40 @@ function render() {
   theta[RightUpperLegId] += 2.0;
   theta[RightLowerLegId] += 1.0;*/
 
-  if (dir1 == false)
+  if (dir1 == !dir1) {
     for (var i = 0; i < numNodes; i++) {
       initNodes(i, 1, 0, 0);
     }
-  traverse(TorsoId);
+    traverse(TorsoId);
+  }
+
+  if (dir2 == !dir2) {
+    for (var i = 0; i < numNodes; i++) {
+      initNodes(i, 1, 0, 0);
+    }
+    traverse(TorsoId);
+  }
+  console.log(dir3);
+  if (dir3 == false) {
+    for (var i = 0; i < numNodes; i++) {
+      initNodes(i, 1, 0, 0);
+    }
+    theta[HeadId] = 90;
+    initNodes(HeadId, 1, 1, 0);
+    traverse(TorsoId);
+  }
+
+  /*theta[HeadId] += 2.0;
+  for (var i = 0; i < numNodes; i++) {
+    initNodes(i, 1, 1, 0);
+  }
+  traverse(TorsoId);*/
+
   /*for (var i = 0; i < numNodes; i++) {
     initNodes(i, 0, 1, 0);
   }
   traverse(TorsoId);
-  for (var i = 0; i < numNodes; i++) {
+  /*for (var i = 0; i < numNodes; i++) {
     initNodes(i, 0, 0, 1);
   }
   traverse(TorsoId);*/
