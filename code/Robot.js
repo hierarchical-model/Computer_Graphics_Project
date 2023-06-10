@@ -2,9 +2,16 @@
 
 var gl;
 
+var isRobot = 1;
+var distanceBetweenRobot = 0;
+var time = 0;
+
 var changeTheta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+var changeSide = 0;
 
 var theta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+
 var TorsoId = 0;
 var HeadId = 1;
 var LeftUpperArmId = 2;
@@ -29,6 +36,7 @@ var LOWER_LEG_HEIGHT = 0.35;
 
 
 var figure = [];
+var distance = [];
 
 var numNodes = 10;
 //생성하려는 총 node 수(몸통, 머리 , ... 오른쪽 윗다리, 오른쪽 아랫다리)
@@ -75,6 +83,22 @@ window.onload = function init() {
     changeTheta[LeftUpperArmId] = -0.5;
     changeTheta[RightUpperArmId] = 0.5;
   }
+  
+  document.getElementById("palms_upper").onclick = function() {
+    //changeTheta[LeftUpperArmId] = -0.5;
+    changeTheta[RightUpperArmId] = -0.5;
+  }
+  document.getElementById("palms_lower").onclick = function() {
+    //changeTheta[LeftLowerArmId] = 0.5;
+    changeTheta[RightLowerArmId] = -0.5;
+  }
+  document.getElementById("sidebyside").onclick = function() {
+    //changeTheta[LeftLowerArmId] = 0.5;
+    changeTheta[RightUpperArmId] = 0.5;
+    changeSide = 0.001;
+
+  }
+
   document.getElementById("pause").onclick = function() {
     changeTheta[LeftUpperArmId] = 0;
     changeTheta[RightUpperArmId] = 0;
@@ -324,6 +348,7 @@ window.onload = function init() {
 
   for(var i = 0; i<numNodes; i++){
     figure[i] = createNode(null, null, null, null);
+    distance[i] = createDistance(0,0,0);
   }
 
   render();
@@ -342,57 +367,85 @@ function createNode(transform, render, sibling, child){
   }
   return node;
 }
+function createDistance(x, y, z){
+  var node = {
+    x : x,
+    y : y,
+    z : z,
+  }
+  return node;
+}
 
 function initNodes(Id, Xaxis, Yaxis, Zaxis){
   var m = mat4();
   switch(Id){
     case TorsoId:
-      m = rotate(theta[TorsoId], Xaxis, Yaxis, Zaxis);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[TorsoId], Xaxis, Yaxis, Zaxis);
+      }
       figure[TorsoId] = createNode(m, torso, null, HeadId);
       break;
     
     case HeadId:
-      m = rotate(theta[HeadId], Xaxis, Yaxis, Zaxis);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[HeadId], Xaxis, Yaxis, Zaxis);
+      }
       figure[HeadId] = createNode(m, head, LeftUpperArmId, null);
       break;
 
     case LeftUpperArmId:
-      m = rotate(theta[LeftUpperArmId], 1, 0, 0);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[LeftUpperArmId], Xaxis, Yaxis, Zaxis);
+      }
       figure[LeftUpperArmId] = createNode(m, leftUpperArm, RightUpperArmId, LeftLowerArmId);
       break;
     
     case RightUpperArmId:
-      m = rotate(theta[RightUpperArmId], 1, 0, 0);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[RightUpperArmId], Xaxis, Yaxis, Zaxis);
+      }
       figure[RightUpperArmId] = createNode(m, rightUpperArm, LeftUpperLegId, RightLowerArmId);
       break;
     
     case LeftUpperLegId:
-      m = rotate(theta[LeftUpperLegId], Xaxis, Yaxis, Zaxis);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[LeftUpperLegId], Xaxis, Yaxis, Zaxis);
+      }
       figure[LeftUpperLegId] = createNode(m, leftUpperLeg, RightUpperLegId, LeftLowerLegId);
       break;
     
     case RightUpperLegId:
-      m = rotate(theta[RightUpperLegId], Xaxis, Yaxis, Zaxis);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[RightUpperLegId], Xaxis, Yaxis, Zaxis);
+      }
       figure[RightUpperLegId] = createNode(m, rightUpperLeg, null, RightLowerLegId); 
       break;
 
     case LeftLowerArmId:
-      m = rotate(theta[LeftLowerArmId], 1, 0, Zaxis);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[LeftLowerArmId], Xaxis, Yaxis, Zaxis);
+      }
       figure[LeftLowerArmId] = createNode(m, leftLowerArm, null, null);
       break;
     
     case RightLowerArmId:
-      m = rotate(theta[RightLowerArmId], Xaxis, Yaxis, Zaxis);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[RightLowerArmId], Xaxis, Yaxis, Zaxis);
+      }
       figure[RightLowerArmId] = createNode(m, rightLowerArm, null, null);
       break;
 
     case LeftLowerLegId:
-      m = rotate(theta[LeftLowerLegId], Xaxis, Yaxis, Zaxis);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[LeftLowerLegId], Xaxis, Yaxis, Zaxis);
+      }
       figure[LeftLowerLegId] = createNode(m, leftLowerLeg, null, null);
       break;
     
     case RightLowerLegId:
-      m = rotate(theta[RightLowerLegId], Xaxis, Yaxis, Zaxis);
+      if(Xaxis != 0 || Yaxis != 0 || Zaxis != 0){
+        m = rotate(theta[RightLowerLegId], Xaxis, Yaxis, Zaxis);
+      }
       figure[RightLowerLegId] = createNode(m, rightLowerLeg, null, null);
       break;
   }
@@ -415,44 +468,69 @@ function traverse(Id){
     traverse(figure[Id].sibling);
   }
 }
-function translateAxis(Id, radius, rotateAxis){
-  var newMatrix = mat4();
-  var rowAxis;
-  var colAxis;
-  /**
-   * X axis : rotateAxis == 1 -> row: Z, col: Y
-   * Y axis : rotateAxis == 2 -> row: X, col: Z
-   * Z axis : rotateAxis == 3 -> row: X, col: Y
-   */
-  if(theta[Id] >= 0){
-    rowAxis = -1 * Math.sin( radians( theta[Id] ) );
-    colAxis = -2 * ( Math.sin( radians( (theta[Id]/2) ) ) );
-  } else {
-    rowAxis = -1 * Math.sin( radians( theta[Id] ) );
-    colAxis = 2 * (Math.sin( radians( (theta[Id]/2) ) ));
-  }
+// function translateAxis(Id, radius, rotateAxis){
+//   var newMatrix = mat4();
+//   var rowAxis;
+//   var colAxis;
+//   /**
+//    * X axis : rotateAxis == 1 -> row: Z, col: Y
+//    * Y axis : rotateAxis == 2 -> row: X, col: Z
+//    * Z axis : rotateAxis == 3 -> row: X, col: Y
+//    */
+//   if(theta[Id] >= 0){
+//     rowAxis = -1 * Math.sin( radians( theta[Id] ) );
+//     colAxis = -2 * ( Math.sin( radians( (theta[Id]/2) ) ) );
+//   } else {
+//     rowAxis = -1 * Math.sin( radians( theta[Id] ) );
+//     colAxis = 2 * (Math.sin( radians( (theta[Id]/2) ) ));
+//   }
 
-  if(rotateAxis == 1){
-    newMatrix = mult(newMatrix, translate(0, (radius * colAxis), (radius * rowAxis)));
-    return newMatrix;
-  }
-  else if(rotateAxis == 2){
-    newMatrix = mult(newMatrix, translate((radius * rowAxis), 0, (radius * colAxis)));
-    return newMatrix;
-  }
-  else if(rotateAxis == 3){
-    newMatrix = mult(newMatrix, translate((radius * rowAxis), (radius * colAxis), 0));
-    return newMatrix;
-  }
-  else{
-    console.log("잘못된 axis 입력");
-    return null;
-  }
-}
+//   if(rotateAxis == 1){
+//     newMatrix = mult(newMatrix, translate(0, (radius * colAxis), (radius * rowAxis)));
+//     return newMatrix;
+//   }
+//   else if(rotateAxis == 2){
+//     newMatrix = mult(newMatrix, translate((radius * rowAxis), 0, (radius * colAxis)));
+//     return newMatrix;
+//   }
+//   else if(rotateAxis == 3){
+//     newMatrix = mult(newMatrix, translate((radius * rowAxis), (radius * colAxis), 0));
+//     return newMatrix;
+//   }
+//   else{
+//     console.log("잘못된 axis 입력");
+//     return null;
+//   }
+// }
+// function leftUpperArmTranslate(){
+//   var newMatrix = mat4();
+//   var rowAxis;
+//   var colAxis;
+//   if(theta[LeftUpperArmId] >= 0){
+//     rowAxis = -(UPPER_ARM_HEIGHT/2) * ( Math.cos( radians( (-1 * theta[LeftUpperArmId]) + 90 ) ) );
+//     colAxis = (UPPER_ARM_HEIGHT/2) * ( 1 - ( Math.sin( radians( (-1 * theta[LeftUpperArmId]) + 90 ) ) ) );
+//     newMatrix = translate(0, (UPPER_ARM_HEIGHT/2) * colAxis, rowAxis);
+//     return newMatrix
+
+//   } else {
+//     rowAxis = -(UPPER_ARM_HEIGHT/2) * ( Math.cos( radians( (-1 * theta[LeftUpperArmId]) + 90 ) ) );
+//     colAxis = (UPPER_ARM_HEIGHT/2) * (1 - ( Math.sin( radians( (-1 * theta[LeftUpperArmId]) + 90 ) ) ));
+//     console.log("row : "+rowAxis);
+//     console.log("col : "+colAxis);
+//     console.log("theta : "+theta[LeftUpperArmId]);
+//     newMatrix = translate(0, colAxis, rowAxis);
+//     return newMatrix
+//   }
+  
+// }
+
 
 function torso() {
   var instanceMatrix = translate(0.0, 0.5 * TORSO_HEIGHT - 0.15, 0.0);
   var t = mult(modelViewMatrix, instanceMatrix);
+  if(isRobot == 2){
+    t = mult(t, translate(distanceBetweenRobot,0,0));
+  }
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 0, 4); //Torso앞면
   gl.drawArrays(gl.LINE_LOOP, 4, 4); //Torso뒷면
@@ -488,8 +566,8 @@ function leftUpperArm() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
-  t = mult(t, translateAxis(LeftUpperArmId, UPPER_ARM_HEIGHT/2, 1));
-  
+  //t = mult(t, translateAxis(LeftUpperArmId, UPPER_ARM_HEIGHT/2, 1));
+ 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 32, 4); //Left upper arm앞면
   gl.drawArrays(gl.LINE_LOOP, 36, 4); //Left upper arm뒷면
@@ -509,6 +587,8 @@ function leftLowerArm() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  //t = mult(t, translateAxis(LeftLowerArmId, 0, 3));
+
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 48, 4); //Left lower arm앞면
   gl.drawArrays(gl.LINE_LOOP, 52, 4); //Left lower arm뒷면
@@ -566,7 +646,8 @@ function rightUpperArm() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
-  t = mult(t, translateAxis(RightUpperArmId, UPPER_ARM_HEIGHT/2, 1));
+  t =  mult(t, translate( 0, -0.385 * Math.sin( radians ( theta[RightUpperArmId])) + 0.03 * Math.cos(radians(theta[RightUpperArmId]+90)), 0) );
+  
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 96, 4); //Right upper arm앞면
   gl.drawArrays(gl.LINE_LOOP, 100, 4); //Right upper arm뒷면
@@ -650,27 +731,62 @@ function render() {
   gl.drawArrays(gl.LINES, 160, 2); // x축
   gl.drawArrays(gl.LINES, 162, 2); // y축
 
-  theta[LeftUpperArmId] = theta[LeftUpperArmId] + changeTheta[LeftUpperArmId];
+  // theta[LeftUpperArmId] = theta[LeftUpperArmId] + changeTheta[LeftUpperArmId];
   theta[RightUpperArmId] = theta[RightUpperArmId] + changeTheta[RightUpperArmId];
+  distance[RightUpperArmId].x = distance[RightUpperArmId].x + changeSide;
+  // theta[LeftLowerArmId] = theta[LeftLowerArmId] + changeTheta[LeftLowerArmId];
+  // theta[RightLowerArmId] = theta[RightLowerArmId] + changeTheta[RightLowerArmId];
   
-  if(theta[LeftUpperArmId] > 90){
-    changeTheta[LeftUpperArmId] = -0.5;
+  
+  // if(theta[LeftUpperArmId] < -90){
+  //   changeTheta[LeftUpperArmId] = 0;
+  // }
+   if(theta[RightUpperArmId] > 90){
+    changeTheta[RightUpperArmId] = 0;
+    changeSide = 0;
   }
-  if(theta[LeftUpperArmId] < -90){
-    changeTheta[LeftUpperArmId] = 0.5;
-  }
-  if(theta[RightUpperArmId] > 90){
-    changeTheta[RightUpperArmId] = -0.5;
-  }
-  if(theta[RightUpperArmId] < -90){
-    changeTheta[RightUpperArmId] = 0.5;
+  // if(theta[LeftLowerArmId] > 35){
+  //   changeTheta[LeftLowerArmId] = 0;
+  //   isRobot = 2;
+  // }
+  //  if(theta[RightLowerArmId] < -35){
+  //   changeTheta[RightLowerArmId] = 0;
+  //   isRobot = 2;
+  // }
+
+  if(isRobot == 1){
+    
+    for(var i = 0; i < numNodes; i++){
+      initNodes(i,0,0,0);
+    }
+    initNodes(6,0,0,1);
+    traverse(TorsoId);
   }
 
+  // if(isRobot == 2){
+  //   time = time+1;
 
-  for(var i = 0; i < numNodes; i++){
-    initNodes(i,0,1,0);
-  }
-  traverse(TorsoId);
+  //   for(var i = 0; i < numNodes; i++){
+  //     initNodes(i,0,0,0);
+  //   }
+  //   traverse(TorsoId);
+
+  //   distanceBetweenRobot = -distanceBetweenRobot;
+
+  //   for(var i = 0; i < numNodes; i++){
+  //     initNodes(i,0,0,0);
+      
+  //   }
+  //   traverse(TorsoId);
+
+  //   distanceBetweenRobot = -distanceBetweenRobot;
+  //   if(time >= 50){
+  //     distanceBetweenRobot = distanceBetweenRobot + 0.01;
+  //   }
+  //   if(distanceBetweenRobot >= 0.45){
+  //     distanceBetweenRobot = 0.45;
+  //   }
+  // }
 
   requestAnimationFrame(render); //요기는 강의노트와 스펠링이 다름
 }
