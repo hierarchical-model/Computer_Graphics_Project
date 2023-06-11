@@ -344,6 +344,19 @@ window.onload = function init() {
 
     vec3(0, 1, 0), // y축
     vec3(0, -1, 0), // y축
+
+    vec3(-1,-1,-1),
+    vec3(1,-1,-1),
+
+    vec3(-1,-1,-1),
+    vec3(-1,-1,1),
+
+    vec3(-1,-1,1),
+    vec3(1,-1,1),
+
+    vec3(1,-1,1),
+    vec3(1,-1,-1),
+
   ];
 
   gl.viewport(0, 0, canvas.width, canvas.height);
@@ -910,9 +923,10 @@ function render() {
 
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
-  gl.drawArrays(gl.LINES, 160, 2); // x축
-  gl.drawArrays(gl.LINES, 162, 2); // y축
-
+  gl.drawArrays(gl.LINES, 164, 2);
+  gl.drawArrays(gl.LINES, 166, 2);
+  gl.drawArrays(gl.LINES, 168, 2);
+  gl.drawArrays(gl.LINES, 170, 2);
 
 
   if(isRobot == 1){
@@ -925,7 +939,7 @@ function render() {
     sideBySide();
     traverse(TorsoId);
   }
-  
+
   if(isRobot == 2){
 
     for(var i = 0; i < numNodes; i++){
