@@ -1,6 +1,7 @@
 "use strict";
 
 var gl;
+var dir = 0;
 
 var changeTheta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 
@@ -86,7 +87,12 @@ window.onload = function init() {
   };
 
   document.getElementById("seesky").onclick = function () {
+    dir = 0;
     changeTheta[HeadId] = -0.5;
+  };
+  document.getElementById("head_on").onclick = function () {
+    dir = 1;
+    changeTheta[HeadId] = 0.5;
   };
 
   gl = WebGLUtils.setupWebGL(canvas);
@@ -795,9 +801,10 @@ function render() {
   }
 
   //하늘 쳐다보기
-  if (theta[HeadId] < -45) {
-    changeTheta[HeadId] = 0;
-  }
+  if (theta[HeadId] < -45 && dir == 0) changeTheta[HeadId] = 0;
+
+  //머리 정면으로 돌리기
+  if (theta[HeadId] > 0 && dir == 1) changeTheta[HeadId] = 0;
 
   for (var i = 0; i < numNodes; i++) {
     initNodes(i, 0, 0, 0);
