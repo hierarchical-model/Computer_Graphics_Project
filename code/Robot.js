@@ -2,6 +2,8 @@
 
 var gl;
 
+var changeTheta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
 var theta = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 var TorsoId = 0;
 var HeadId = 1;
@@ -24,10 +26,6 @@ var BETWEEN_LEGS_WIDTH = 0.12;
 var UPPER_LEG_HEIGHT = 0.5;
 var UPPER_LEG_WIDTH = 0.14;
 var LOWER_LEG_HEIGHT = 0.35;
-
-var dir1 = true;
-var dir2 = true;
-var dir3 = true;
 
 var figure = [];
 
@@ -69,15 +67,26 @@ window.onload = function init() {
     eyeY = 3.5;
     eyeZ = 2;
   };
-  document.getElementById("run").onClick = function () {
-    dir1 = !dir1;
+
+  document.getElementById("walk").onclick = function () {
+    changeTheta[LeftUpperArmId] = -0.3;
+    changeTheta[RightUpperArmId] = 0.3;
+    changeTheta[LeftUpperLegId] = 0.4;
+    changeTheta[RightUpperLegId] = -0.4;
+    changeTheta[LeftLowerArmId] = -0.6;
+    changeTheta[RightLowerArmId] = 0.6;
+    changeTheta[LeftLowerLegId] = 0.8;
+    changeTheta[RightLowerLegId] = -0.8;
   };
-  document.getElementById("stop").onClick = function () {
-    dir2 = !dir2;
+  document.getElementById("stop").onclick = function () {
+    for (var i = 0; i < numNodes; i++) {
+      theta[i] = 0;
+      changeTheta[i] = 0;
+    }
   };
-  document.getElementById("seesky").onClick = function () {
-    dir3 = !dir3;
-    console.log(dir3);
+
+  document.getElementById("seesky").onclick = function () {
+    changeTheta[HeadId] = -0.5;
   };
 
   gl = WebGLUtils.setupWebGL(canvas);
@@ -290,9 +299,6 @@ window.onload = function init() {
 
     vec3(0, 1, 0), // y축
     vec3(0, -1, 0), // y축
-
-    vec3(-1, 0.2, 0), //회전중심
-    vec3(1, 0.2, 0), //회전중심
   ];
 
   gl.viewport(0, 0, canvas.width, canvas.height);
@@ -348,17 +354,20 @@ function initNodes(Id, Xaxis, Yaxis, Zaxis) {
   var m = mat4();
   switch (Id) {
     case TorsoId:
-      m = rotate(theta[TorsoId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[TorsoId], Xaxis, Yaxis, Zaxis);
       figure[TorsoId] = createNode(m, torso, null, HeadId);
       break;
 
     case HeadId:
-      m = rotate(theta[HeadId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[HeadId], Xaxis, Yaxis, Zaxis);
       figure[HeadId] = createNode(m, head, LeftUpperArmId, null);
       break;
 
     case LeftUpperArmId:
-      m = rotate(theta[LeftUpperArmId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[LeftUpperArmId], Xaxis, Yaxis, Zaxis);
       figure[LeftUpperArmId] = createNode(
         m,
         leftUpperArm,
@@ -368,7 +377,8 @@ function initNodes(Id, Xaxis, Yaxis, Zaxis) {
       break;
 
     case RightUpperArmId:
-      m = rotate(theta[RightUpperArmId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[RightUpperArmId], Xaxis, Yaxis, Zaxis);
       figure[RightUpperArmId] = createNode(
         m,
         rightUpperArm,
@@ -378,7 +388,8 @@ function initNodes(Id, Xaxis, Yaxis, Zaxis) {
       break;
 
     case LeftUpperLegId:
-      m = rotate(theta[LeftUpperLegId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[LeftUpperLegId], Xaxis, Yaxis, Zaxis);
       figure[LeftUpperLegId] = createNode(
         m,
         leftUpperLeg,
@@ -388,7 +399,8 @@ function initNodes(Id, Xaxis, Yaxis, Zaxis) {
       break;
 
     case RightUpperLegId:
-      m = rotate(theta[RightUpperLegId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[RightUpperLegId], Xaxis, Yaxis, Zaxis);
       figure[RightUpperLegId] = createNode(
         m,
         rightUpperLeg,
@@ -398,22 +410,26 @@ function initNodes(Id, Xaxis, Yaxis, Zaxis) {
       break;
 
     case LeftLowerArmId:
-      m = rotate(theta[LeftLowerArmId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[LeftLowerArmId], Xaxis, Yaxis, Zaxis);
       figure[LeftLowerArmId] = createNode(m, leftLowerArm, null, null);
       break;
 
     case RightLowerArmId:
-      m = rotate(theta[RightLowerArmId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[RightLowerArmId], Xaxis, Yaxis, Zaxis);
       figure[RightLowerArmId] = createNode(m, rightLowerArm, null, null);
       break;
 
     case LeftLowerLegId:
-      m = rotate(theta[LeftLowerLegId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[LeftLowerLegId], Xaxis, Yaxis, Zaxis);
       figure[LeftLowerLegId] = createNode(m, leftLowerLeg, null, null);
       break;
 
     case RightLowerLegId:
-      m = rotate(theta[RightLowerLegId], Xaxis, Yaxis, Zaxis);
+      if (Xaxis != 0 || Yaxis != 0 || Zaxis != 0)
+        m = rotate(theta[RightLowerLegId], Xaxis, Yaxis, Zaxis);
       figure[RightLowerLegId] = createNode(m, rightLowerLeg, null, null);
       break;
   }
@@ -454,7 +470,7 @@ function torso() {
 function head() {
   var instanceMatrix = translate(0.0, 0.5 * (TORSO_HEIGHT + HEAD_HEIGHT), 0.0);
   var t = mult(modelViewMatrix, instanceMatrix);
-
+  t = mult(t, rotate(theta[HeadId], 1, 1, 0));
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 16, 4); //Head앞면
   gl.drawArrays(gl.LINE_LOOP, 20, 4); //Head뒷면
@@ -464,6 +480,7 @@ function head() {
   gl.drawArrays(gl.LINES, 28, 2); //Head앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 30, 2); //Head앞뒷면 연결-4
 
+  gl.drawArrays(gl.TRIANGLE_FAN, 16, 4);
   modelViewMatrix = t;
 }
 
@@ -474,6 +491,16 @@ function leftUpperArm() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, rotate(theta[LeftUpperArmId], 1, 0, 0));
+  t = mult(
+    t,
+    translate(
+      0,
+      -0.1 * Math.sin(radians(theta[LeftUpperArmId])),
+      -0.2 * Math.sin(radians(theta[LeftUpperArmId]))
+    )
+  );
+
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 32, 4); //Left upper arm앞면
   gl.drawArrays(gl.LINE_LOOP, 36, 4); //Left upper arm뒷면
@@ -483,6 +510,7 @@ function leftUpperArm() {
   gl.drawArrays(gl.LINES, 44, 2); //Left upper arm앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 46, 2); //Left upper arm앞뒷면 연결-4
 
+  gl.drawArrays(gl.TRIANGLE_FAN, 32, 4);
   modelViewMatrix = t;
 }
 
@@ -493,6 +521,15 @@ function leftLowerArm() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, rotate(theta[LeftLowerArmId], 1, 0, 0));
+  t = mult(
+    t,
+    translate(
+      0,
+      -0.1 * Math.sin(radians(theta[LeftLowerArmId])),
+      -0.2 * Math.sin(radians(theta[LeftLowerArmId]))
+    )
+  );
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 48, 4); //Left lower arm앞면
   gl.drawArrays(gl.LINE_LOOP, 52, 4); //Left lower arm뒷면
@@ -502,6 +539,7 @@ function leftLowerArm() {
   gl.drawArrays(gl.LINES, 60, 2); //Left lower arm앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 62, 2); //Left lower arm앞뒷면 연결-4
 
+  gl.drawArrays(gl.TRIANGLE_FAN, 48, 14);
   modelViewMatrix = t;
 }
 
@@ -512,6 +550,15 @@ function leftUpperLeg() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, rotate(theta[LeftUpperLegId], 1, 0, 0));
+  t = mult(
+    t,
+    translate(
+      0,
+      -0.1 * Math.sin(radians(theta[LeftUpperLegId])),
+      -0.2 * Math.sin(radians(theta[LeftUpperLegId]))
+    )
+  );
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 64, 4); //Left upper leg앞면
   gl.drawArrays(gl.LINE_LOOP, 68, 4); //Left upper leg뒷면
@@ -521,6 +568,7 @@ function leftUpperLeg() {
   gl.drawArrays(gl.LINES, 76, 2); //Left upper leg앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 78, 2); //Left upper leg앞뒷면 연결-4
 
+  gl.drawArrays(gl.TRIANGLE_FAN, 64, 4);
   modelViewMatrix = t;
 }
 
@@ -531,6 +579,15 @@ function leftLowerLeg() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, rotate(theta[LeftLowerLegId], 1, 0, 0));
+  t = mult(
+    t,
+    translate(
+      0,
+      -0.1 * Math.sin(radians(theta[LeftLowerLegId])),
+      -0.2 * Math.sin(radians(theta[LeftLowerLegId]))
+    )
+  );
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 80, 4); //Left lower leg앞면
   gl.drawArrays(gl.LINE_LOOP, 84, 4); //Left lower leg뒷면
@@ -540,6 +597,7 @@ function leftLowerLeg() {
   gl.drawArrays(gl.LINES, 92, 2); //Left lower leg앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 94, 2); //Left lower leg앞뒷면 연결-4
 
+  gl.drawArrays(gl.TRIANGLE_FAN, 80, 16);
   modelViewMatrix = t;
 }
 
@@ -550,6 +608,15 @@ function rightUpperArm() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, rotate(theta[RightUpperArmId], 1, 0, 0));
+  t = mult(
+    t,
+    translate(
+      0,
+      -0.1 * Math.sin(radians(theta[RightUpperArmId])),
+      -0.2 * Math.sin(radians(theta[RightUpperArmId]))
+    )
+  );
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 96, 4); //Right upper arm앞면
   gl.drawArrays(gl.LINE_LOOP, 100, 4); //Right upper arm뒷면
@@ -559,6 +626,7 @@ function rightUpperArm() {
   gl.drawArrays(gl.LINES, 108, 2); //Right upper arm앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 110, 2); //Right upper arm앞뒷면 연결-4
 
+  gl.drawArrays(gl.TRIANGLE_FAN, 96, 4);
   modelViewMatrix = t;
 }
 
@@ -569,6 +637,15 @@ function rightLowerArm() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, rotate(theta[RightLowerArmId], 1, 0, 0));
+  t = mult(
+    t,
+    translate(
+      0,
+      -0.1 * Math.sin(radians(theta[RightLowerArmId])),
+      -0.2 * Math.sin(radians(theta[RightLowerArmId]))
+    )
+  );
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 112, 4); //Right lower arm앞면
   gl.drawArrays(gl.LINE_LOOP, 116, 4); //Right lower arm뒷면
@@ -578,6 +655,7 @@ function rightLowerArm() {
   gl.drawArrays(gl.LINES, 124, 2); //Right lower arm앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 126, 2); //Right lower arm앞뒷면 연결-4
 
+  gl.drawArrays(gl.TRIANGLE_FAN, 112, 14);
   modelViewMatrix = t;
 }
 
@@ -588,6 +666,15 @@ function rightUpperLeg() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, rotate(theta[RightUpperLegId], 1, 0, 0));
+  t = mult(
+    t,
+    translate(
+      0,
+      -0.1 * Math.sin(radians(theta[RightUpperLegId])),
+      -0.2 * Math.sin(radians(theta[RightUpperLegId]))
+    )
+  );
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 128, 4); //Right upper leg앞면
   gl.drawArrays(gl.LINE_LOOP, 132, 4); //Right upper leg뒷면
@@ -597,6 +684,7 @@ function rightUpperLeg() {
   gl.drawArrays(gl.LINES, 140, 2); //Right upper leg앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 142, 2); //Right upper leg앞뒷면 연결-4
 
+  gl.drawArrays(gl.TRIANGLE_FAN, 128, 4);
   modelViewMatrix = t;
 }
 
@@ -607,6 +695,15 @@ function rightLowerLeg() {
     0.0
   );
   var t = mult(modelViewMatrix, instanceMatrix);
+  t = mult(t, rotate(theta[RightLowerLegId], 1, 0, 0));
+  t = mult(
+    t,
+    translate(
+      0,
+      -0.1 * Math.sin(radians(theta[RightLowerLegId])),
+      -0.2 * Math.sin(radians(theta[RightLowerLegId]))
+    )
+  );
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(t));
   gl.drawArrays(gl.LINE_LOOP, 144, 4); //Right lower leg앞면
   gl.drawArrays(gl.LINE_LOOP, 148, 4); //Right lower leg뒷면
@@ -616,6 +713,7 @@ function rightLowerLeg() {
   gl.drawArrays(gl.LINES, 156, 2); //Right lower leg앞뒷면 연결-3
   gl.drawArrays(gl.LINES, 158, 2); //Right lower leg앞뒷면 연결-4
 
+  gl.drawArrays(gl.TRIANGLE_FAN, 144, 14);
   modelViewMatrix = t;
 }
 
@@ -623,59 +721,88 @@ function render() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   eye = vec3(eyeX, eyeY, eyeZ);
   modelViewMatrix = lookAt(eye, at, up);
+
   gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
   gl.drawArrays(gl.LINES, 160, 2); // x축
   gl.drawArrays(gl.LINES, 162, 2); // y축
-  gl.drawArrays(gl.LINES, 164, 2);
 
-  /*theta[HeadId] += 2.0;
-  theta[LeftUpperArmId] += 2.0;
-  theta[LeftLowerArmId] += 0.2;
-  theta[RightUpperArmId] += 2.0;
-  theta[RightLowerArmId] += 0.5;
-  theta[LeftUpperLegId] += 2.0;
-  theta[LeftLowerLegId] += 1.0;
-  theta[RightUpperLegId] += 2.0;
-  theta[RightLowerLegId] += 1.0;*/
+  theta[LeftUpperArmId] = theta[LeftUpperArmId] + changeTheta[LeftUpperArmId];
+  theta[RightUpperArmId] =
+    theta[RightUpperArmId] + changeTheta[RightUpperArmId];
+  theta[LeftUpperLegId] = theta[LeftUpperLegId] + changeTheta[LeftUpperLegId];
+  theta[RightUpperLegId] =
+    theta[RightUpperLegId] + changeTheta[RightUpperLegId];
 
-  if (dir1 == !dir1) {
-    for (var i = 0; i < numNodes; i++) {
-      initNodes(i, 1, 0, 0);
-    }
-    traverse(TorsoId);
+  theta[LeftLowerArmId] = theta[LeftLowerArmId] + changeTheta[LeftLowerArmId];
+  theta[RightLowerArmId] =
+    theta[RightLowerArmId] + changeTheta[RightLowerArmId];
+  theta[LeftLowerLegId] = theta[LeftLowerLegId] + changeTheta[LeftLowerLegId];
+  theta[RightLowerLegId] =
+    theta[RightLowerLegId] + changeTheta[RightLowerLegId];
+
+  theta[HeadId] = theta[HeadId] + changeTheta[HeadId];
+
+  //걷기
+  if (theta[LeftUpperArmId] > 15) {
+    changeTheta[LeftUpperArmId] = -0.3;
+  }
+  if (theta[LeftUpperArmId] < -15) {
+    changeTheta[LeftUpperArmId] = 0.3;
+  }
+  if (theta[RightUpperArmId] > 15) {
+    changeTheta[RightUpperArmId] = -0.3;
+  }
+  if (theta[RightUpperArmId] < -15) {
+    changeTheta[RightUpperArmId] = 0.3;
+  }
+  if (theta[LeftLowerArmId] > 15) {
+    changeTheta[LeftLowerArmId] = -0.3;
+  }
+  if (theta[LeftLowerArmId] < -30) {
+    changeTheta[LeftLowerArmId] = 0.6;
+  }
+  if (theta[RightLowerArmId] > 15) {
+    changeTheta[RightLowerArmId] = -0.3;
+  }
+  if (theta[RightLowerArmId] < -30) {
+    changeTheta[RightLowerArmId] = 0.6;
   }
 
-  if (dir2 == !dir2) {
-    for (var i = 0; i < numNodes; i++) {
-      initNodes(i, 1, 0, 0);
-    }
-    traverse(TorsoId);
+  if (theta[LeftUpperLegId] > 20) {
+    changeTheta[LeftUpperLegId] = -0.4;
   }
-  console.log(dir3);
-  if (dir3 == false) {
-    for (var i = 0; i < numNodes; i++) {
-      initNodes(i, 1, 0, 0);
-    }
-    theta[HeadId] = 90;
-    initNodes(HeadId, 1, 1, 0);
-    traverse(TorsoId);
+  if (theta[LeftUpperLegId] < -20) {
+    changeTheta[LeftUpperLegId] = 0.4;
+  }
+  if (theta[RightUpperLegId] > 20) {
+    changeTheta[RightUpperLegId] = -0.4;
+  }
+  if (theta[RightUpperLegId] < -20) {
+    changeTheta[RightUpperLegId] = 0.4;
+  }
+  if (theta[LeftLowerLegId] > 20) {
+    changeTheta[LeftLowerLegId] = -0.8;
+  }
+  if (theta[LeftLowerLegId] < -20) {
+    changeTheta[LeftLowerLegId] = 0.8;
+  }
+  if (theta[RightLowerLegId] > 20) {
+    changeTheta[RightLowerLegId] = -0.8;
+  }
+  if (theta[RightLowerLegId] < -20) {
+    changeTheta[RightLowerLegId] = 0.8;
   }
 
-  /*theta[HeadId] += 2.0;
+  //하늘 쳐다보기
+  if (theta[HeadId] < -45) {
+    changeTheta[HeadId] = 0;
+  }
+
   for (var i = 0; i < numNodes; i++) {
-    initNodes(i, 1, 1, 0);
-  }
-  traverse(TorsoId);*/
-
-  /*for (var i = 0; i < numNodes; i++) {
-    initNodes(i, 0, 1, 0);
+    initNodes(i, 0, 0, 0);
   }
   traverse(TorsoId);
-  /*for (var i = 0; i < numNodes; i++) {
-    initNodes(i, 0, 0, 1);
-  }
-  traverse(TorsoId);*/
 
   requestAnimationFrame(render); //요기는 강의노트와 스펠링이 다름
 }
